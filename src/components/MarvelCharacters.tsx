@@ -1,84 +1,49 @@
 'use client';
-import { useEffect, useState } from 'react';
-import fetchMarvelAPI from '@/utils/params-url-marvel';
 
-interface SeriesAndEvents {
-  resourceURI: string;
+import toast, { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import { listCharacters } from '@/server/fetchMarvelAPI';
+import mapSeriesAndEvents from '@/utils/mapSeriesAndEvents';
+
+interface SeriesAndEventsModified {
+  id: number;
   name: string;
 }
 
 interface Character {
   id: number;
   name: string;
-  thumbnail: {
-    path: string;
-    extension: string;
-  };
-  series: {
-    items: SeriesAndEvents[];
-  };
-  events: {
-    items: SeriesAndEvents[];
-  };
+  src: string;
+  series: SeriesAndEventsModified[];
+  events: SeriesAndEventsModified[];
 }
 
 export default function MarvelCharacters() {
   const [characters, setCharacters] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadCharacters() {
       try {
-        const data = await fetchMarvelAPI('/v1/public/characters');
-        setCharacters(data);
-        console.log('Data fetched:', data);
+        toast.loading('Waiting...');
+
+        setCharacters(await listCharacters(30));
+
+        toast.dismiss();
       } catch (err: any) {
-        setError(err.message);
-        console.error('Fetch error:', err.message);
-      } finally {
-        setLoading(false);
+        toast.error(`Error: ${err.message}`);
       }
     }
 
     loadCharacters();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   const charactersDataCleaned = characters.map((character: any) => {
-    let series = character.series.items.map((series: SeriesAndEvents, i: number) => {
-      if (i <= 3) {
-        return series.name;
-      }
-    });
-
-    if (series.length === 0) {
-      series = ['Nenhuma serie encontrada'];
-    }
-
-    let events = character.events.items.map((event: SeriesAndEvents, i: number) => {
-      if (i <= 3) {
-        return event.name;
-      }
-    });
-
-    if (events.length === 0) {
-      events = ['Nenhum evento encontrado'];
-    }
-
     return {
       id: character.id,
-      src: character.thumbnail.path + '.' + character.thumbnail.extension,
       name: character.name,
-      series,
-      events,
+      src: character.thumbnail.path + '.' + character.thumbnail.extension,
+      series: mapSeriesAndEvents(character.series.items, 'Nenhuma serie encontrada'),
+      events: mapSeriesAndEvents(character.events.items, 'Nenhum evento encontrado'),
     };
   });
 
@@ -89,31 +54,32 @@ export default function MarvelCharacters() {
         <div className="font-bold">Séries</div>
         <div className="font-bold">Eventos</div>
       </div>
-      {charactersDataCleaned.map((character: any) => (
+      {charactersDataCleaned.map((character: Character) => (
         <div
           key={character.id}
-          className="grid grid-cols-3 gap-4 text-left border border-border rounded px-5 py-4 mb-4"
+          className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4"
         >
           <div className="flex items-center gap-4">
             <img src={character.src} alt="" className="w-11 h-11" />
             <h3 className="font-semibold text-sm">{character.name}</h3>
           </div>
           <div className="flex flex-col justify-center">
-            {character.series.map((name: string) => (
-              <h4 key={name} className="text-white">
-                {name}
+            {character.series.map((item: SeriesAndEventsModified) => (
+              <h4 key={item.id} className="text-white">
+                {item.name}
               </h4>
             ))}
           </div>
           <div className="flex flex-col justify-center">
-            {character.events.map((name: string) => (
-              <h4 key={name} className="text-white">
-                {name}
+            {character.events.map((event: SeriesAndEventsModified) => (
+              <h4 key={event.id} className="text-white">
+                {event.name}
               </h4>
             ))}
           </div>
         </div>
       ))}
+      <Toaster />
     </div>
   );
 }
