@@ -13,9 +13,13 @@ const config: Config = {
       },
       colors: {
         background: 'var(--background, #020617)',
-        'neural-blue': 'var(--Neural-Blue, #00C1FA)',
+        'neural-blue': 'var(--neural-blue, #00C1FA)',
         'muted-foreground': 'var(--muted-foreground, #94A3B8)',
-        border: 'var(--border, #334155)',
+        'border-grey': 'var(--border-grey, #334155)',
+        'border-red': 'var(--border-red, #EF4444)',
+      },
+      height: {
+        'custom-110': '27.4375rem',
       },
     },
   },

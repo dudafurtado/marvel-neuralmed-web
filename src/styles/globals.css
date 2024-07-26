@@ -1,8 +1,9 @@
 :root {
   --background: #020617;
-  --Neural-Blue: #00c1fa;
+  --neural-blue: #00c1fa;
   --muted-foreground: #94a3b8;
-  --border: #334155;
+  --border-border-grey: #334155;
+  --border-red: #ef4444;
 }
 
 @tailwind base;
