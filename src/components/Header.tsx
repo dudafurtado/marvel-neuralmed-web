@@ -3,7 +3,7 @@ import Logo from '../../public/logo-neuralmed.svg';
 
 export default function Header() {
   return (
-    <header className="w-full flex items-center justify-between px-9 py-3 text-white mb-8 border-b border-b-neural-blue">
+    <header className="w-full flex items-center justify-between px-9 py-3 text-white border-b border-b-neural-blue">
       <section className="flex items-center gap-4">
         <Image src={Logo} alt="Logo da empresa NeuralMed" width={28} height={32} />
         <strong>

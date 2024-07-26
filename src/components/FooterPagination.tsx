@@ -56,7 +56,7 @@ const FooterPagination: React.FC<PaginationProps> = ({ totalPages }) => {
   }
 
   return (
-    <nav className="flex items-center justify-center space-x-2 border-t-2 border-border py-2.5 mt-4">
+    <nav className="flex items-center justify-center space-x-2 border-t-2 border-border-grey py-2.5 mt-4">
       {renderPageNumbers()}
     </nav>
   );
