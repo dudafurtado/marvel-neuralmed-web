@@ -1,113 +1,99 @@
-export default interface MarvelEventResponse {
+export interface MarvelStoriesResponse {
   code: number;
   status: string;
   copyright: string;
   attributionText: string;
   attributionHTML: string;
   etag: string;
-  data: MarvelEventData;
+  data: MarvelStoriesData;
 }
 
-interface MarvelEventData {
+interface MarvelStoriesData {
   offset: number;
   limit: number;
   total: number;
   count: number;
-  results: MarvelEvent[];
+  results: MarvelStory[];
 }
 
-export interface MarvelEvent {
+export interface MarvelStory {
   id: number;
   title: string;
   description: string;
   resourceURI: string;
-  urls: Url[];
+  type: string;
   modified: string;
-  start: string;
-  end: string;
-  thumbnail: Thumbnail;
-  creators: CreatorData;
-  characters: CharacterData;
-  stories: StoryData;
-  comics: ComicData;
-  series: SeriesData;
-  next: EventSummary;
-  previous: EventSummary;
+  thumbnail: MarvelThumbnail | null;
+  creators: MarvelCreators;
+  characters: MarvelCharacters;
+  series: MarvelSeries;
+  comics: MarvelComics;
+  events: MarvelEvents;
+  originalIssue: MarvelOriginalIssue;
 }
 
-interface Thumbnail {
+interface MarvelThumbnail {
   path: string;
   extension: string;
 }
 
-interface CreatorData {
+interface MarvelCreators {
   available: number;
   collectionURI: string;
-  items: Creator[];
+  items: MarvelCreatorItem[];
   returned: number;
 }
 
-interface Creator {
+interface MarvelCreatorItem {
   resourceURI: string;
   name: string;
   role: string;
 }
 
-interface CharacterData {
+interface MarvelCharacters {
   available: number;
   collectionURI: string;
-  items: Character[];
+  items: MarvelCharacterItem[];
   returned: number;
 }
 
-interface Character {
+interface MarvelCharacterItem {
   resourceURI: string;
   name: string;
 }
 
-interface StoryData {
+interface MarvelSeries {
   available: number;
   collectionURI: string;
-  items: Story[];
+  items: MarvelSeriesItem[];
   returned: number;
 }
 
-interface Story {
+interface MarvelSeriesItem {
   resourceURI: string;
   name: string;
-  type?: string;
 }
 
-interface ComicData {
+interface MarvelComics {
   available: number;
   collectionURI: string;
-  items: Comic[];
+  items: MarvelComicItem[];
   returned: number;
 }
 
-interface Comic {
+interface MarvelComicItem {
   resourceURI: string;
   name: string;
 }
 
-interface SeriesData {
+interface MarvelEvents {
   available: number;
   collectionURI: string;
-  items: Series[];
+  items: any[];
   returned: number;
 }
 
-interface Series {
+interface MarvelOriginalIssue {
   resourceURI: string;
   name: string;
-}
-
-interface EventSummary {
-  resourceURI: string;
-  name: string;
-}
-
-interface Url {
-  type: string;
-  url: string;
 }
