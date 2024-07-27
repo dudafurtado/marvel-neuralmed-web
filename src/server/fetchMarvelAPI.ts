@@ -1,9 +1,17 @@
 import paramsUrlMarvel from '@/utils/paramsUrlMarvel';
+import { MarvelCharacter, MarvelResponse } from '@/interfaces/characterListInterfaces';
 import MarvelAPIResponse, { Character } from '@/interfaces/characterDetailsInterfaces';
+import {
+  MarvelStoriesResponse,
+  MarvelStory,
+} from '@/interfaces/characterStoriesListInterfaces';
 import MarvelEventResponse, {
   MarvelEvent,
 } from '@/interfaces/characterEventsListInterfaces';
-import { MarvelCharacter, MarvelResponse } from '@/interfaces/characterListInterfaces';
+import {
+  MarvelSeries,
+  MarvelSeriesResponse,
+} from '@/interfaces/characterSeriesListInterfaces';
 
 const baseUrl = process.env.NEXT_PUBLIC_MARVEL_BASE_URL as string;
 const params = paramsUrlMarvel();
@@ -42,9 +50,9 @@ export async function characterDetails(id: number) {
   return data.data.results[0] as Character;
 }
 
-export async function listCharacterEvents(id: number) {
+export async function characterLists(id: number, typeOfList: string) {
   const characterId = `/${id}`;
-  const url = `${baseUrl}/v1/public/characters${characterId}/events${params}`;
+  const url = `${baseUrl}/v1/public/characters${characterId}/${typeOfList}${params}`;
   const res = await fetch(url);
 
   if (!res.ok) {
@@ -52,7 +60,8 @@ export async function listCharacterEvents(id: number) {
     throw new Error(`Failed to fetch data: ${errorText}`);
   }
 
-  const data: MarvelEventResponse = await res.json();
+  const data: MarvelStoriesResponse | MarvelEventResponse | MarvelSeriesResponse =
+    await res.json();
 
-  return data.data.results as MarvelEvent[];
+  return data.data.results as MarvelStory[] | MarvelEvent[] | MarvelSeries[];
 }

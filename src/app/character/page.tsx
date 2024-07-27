@@ -1,5 +1,5 @@
 import CharacterDetails from '@/components/CharacterDetails';
-import CharacterEvents from '@/components/CharacterEvents';
+import CharacterLists from '@/components/CharacterLists';
 import Header from '@/components/Header';
 
 export default function Character() {
@@ -7,7 +7,11 @@ export default function Character() {
     <article className="min-h-screen w-screen bg-background">
       <Header />
       <CharacterDetails />
-      <CharacterEvents />
+      <main className="flex flex-col gap-6">
+        <CharacterLists typeOfList={'stories'} />
+        <CharacterLists typeOfList={'events'} />
+        <CharacterLists typeOfList={'series'} />
+      </main>
     </article>
   );
 }
