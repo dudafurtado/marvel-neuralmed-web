@@ -9,16 +9,36 @@ import {
   SeriesAndEventsModified,
 } from '@/interfaces/characterListInterfaces';
 import { MarvelError } from '@/interfaces/errorInterface';
+import useMyContext from '@/contexts/useMyContext';
 
 export default function MarvelCharacters() {
+  const [allData, setAllData] = useState<MarvelCharacter[]>([]);
   const [characters, setCharacters] = useState<MarvelCharacter[]>([]);
+  const { searchTerm } = useMyContext();
 
   useEffect(() => {
     async function loadCharacters() {
       try {
         toast.loading('Waiting...');
 
-        setCharacters(await listCharacters(30));
+        let data: any = await listCharacters(30);
+        data = data.map((character: MarvelCharacter) => {
+          return {
+            id: character.id,
+            name: character.name,
+            src: character.thumbnail.path + '.' + character.thumbnail.extension,
+            series: mapSeriesAndEvents(
+              character.series.items,
+              'Nenhuma serie encontrada'
+            ),
+            events: mapSeriesAndEvents(
+              character.events.items,
+              'Nenhum evento encontrado'
+            ),
+          };
+        });
+        setAllData(data);
+        setCharacters(data);
 
         toast.dismiss();
       } catch (err: unknown) {
@@ -30,28 +50,24 @@ export default function MarvelCharacters() {
     loadCharacters();
   }, []);
 
-  const charactersDataCleaned: Character[] = characters.map(
-    (character: MarvelCharacter) => {
-      return {
-        id: character.id,
-        name: character.name,
-        src: character.thumbnail.path + '.' + character.thumbnail.extension,
-        series: mapSeriesAndEvents(character.series.items, 'Nenhuma serie encontrada'),
-        events: mapSeriesAndEvents(character.events.items, 'Nenhum evento encontrado'),
-      };
-    }
-  );
+  useEffect(() => {
+    const contentSeached = allData.filter((character) =>
+      character.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setCharacters(contentSeached);
+  }, [searchTerm]);
 
   return (
     <>
-      <div className="w-full px-9 text-white text-inter">
-        <div className="grid grid-cols-3 gap-4 text-left text-muted-foreground font-semibold text-base mb-4">
+      <main className="w-full px-9 overflow-x-hidden text-white text-inter">
+        <section className="grid grid-cols-3 gap-4 text-left text-muted-foreground font-semibold text-base mb-4">
           <div className="font-bold">Personagem</div>
           <div className="font-bold">Séries</div>
           <div className="font-bold">Eventos</div>
-        </div>
-        {charactersDataCleaned.map((character: Character) => (
-          <div
+        </section>
+        {characters.map((character: any) => (
+          <section
             key={character.id}
             className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4"
           >
@@ -73,9 +89,9 @@ export default function MarvelCharacters() {
                 </h4>
               ))}
             </div>
-          </div>
+          </section>
         ))}
-      </div>
+      </main>
       <Toaster />
     </>
   );
