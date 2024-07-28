@@ -1,7 +1,8 @@
 export default function renderPageNumbers(
   currentPage: number,
-  totalOfPages: number
+  totalOfCharacters: number
 ): (number | string)[] {
+  const totalOfPages = Math.round(totalOfCharacters / 10);
   const pageNumbers: (number | string)[] = [];
   const maxPagesToShow = 5;
 

@@ -8,16 +8,19 @@ interface MyProviderProps {
 
 export default function MyProvider({ children }: MyProviderProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [totalOfPages, setTotalOfPages] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [totalOfCharacters, setTotalOfCharacters] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [characterId, setCharacterId] = useState<number>(0);
 
   const values = {
     searchTerm,
     setSearchTerm,
-    totalOfPages,
-    setTotalOfPages,
+    totalOfCharacters,
+    setTotalOfCharacters,
     currentPage,
     setCurrentPage,
+    characterId,
+    setCharacterId,
   };
 
   return <MyContext.Provider value={values}>{children}</MyContext.Provider>;

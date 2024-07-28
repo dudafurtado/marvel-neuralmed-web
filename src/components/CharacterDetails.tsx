@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { characterDetails } from '@/server/fetchMarvelAPI';
 import { Character, CharacterModified } from '@/interfaces/characterDetailsInterfaces';
 import { MarvelError } from '@/interfaces/errorInterface';
+import useMyContext from '@/contexts/useMyContext';
 
 export default function CharacterDetails() {
   const [character, setCharacter] = useState<CharacterModified>({
@@ -12,24 +13,25 @@ export default function CharacterDetails() {
     description: '',
     src: '',
   });
+  const { characterId } = useMyContext();
 
   useEffect(() => {
     async function loadCharacter() {
-      toast.loading('Waiting...');
-
-      const data: Character = await characterDetails(1009146);
-      setCharacter({
-        id: data.id,
-        name: data.name,
-        description: data.description,
-        src: data.thumbnail.path + '.' + data.thumbnail.extension,
-      });
-
-      toast.dismiss();
       try {
+        toast.loading('Waiting...');
+
+        const data: Character = await characterDetails(characterId);
+        setCharacter({
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          src: data.thumbnail.path + '.' + data.thumbnail.extension,
+        });
       } catch (err: unknown) {
         const error = err as MarvelError;
         toast.error(`Error: ${error.message}`);
+      } finally {
+        toast.dismiss();
       }
     }
 

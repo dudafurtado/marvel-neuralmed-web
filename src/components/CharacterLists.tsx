@@ -4,30 +4,38 @@ import toast, { Toaster } from 'react-hot-toast';
 import { characterLists } from '@/server/fetchMarvelAPI';
 import { MarvelError } from '@/interfaces/errorInterface';
 import { DataRestructured } from '@/interfaces/characterDataCleanedInterface';
+import useMyContext from '@/contexts/useMyContext';
 
 export default function CharacterLists({ typeOfList }: any) {
   const [content, setContent] = useState<DataRestructured[]>([]);
+  const { characterId } = useMyContext();
 
   useEffect(() => {
     async function loadCharacterEvents() {
-      toast.loading('Waiting...');
-
-      const data = await characterLists(1009146, typeOfList);
-      const dataCleaned: any = data.map((item) => {
-        return {
-          id: item.id,
-          title: item.title,
-          description: item.description ? `${item.description.substring(0, 100)}...` : '',
-          src: item.thumbnail ? `${item.thumbnail.path}.${item.thumbnail.extension}` : '',
-        };
-      });
-      setContent(dataCleaned);
-
-      toast.dismiss();
       try {
+        toast.loading('Waiting...');
+
+        const data = await characterLists(characterId, typeOfList);
+        const dataCleaned: any = data.map((item) => {
+          return {
+            id: item.id,
+            title: item.title,
+            description: item.description
+              ? `${item.description.substring(0, 100)}...`
+              : '',
+            src: item.thumbnail
+              ? `${item.thumbnail.path}.${item.thumbnail.extension}`
+              : '',
+          };
+        });
+        setContent(dataCleaned);
+
+        toast.dismiss();
       } catch (err: unknown) {
         const error = err as MarvelError;
         toast.error(`Error: ${error.message}`);
+      } finally {
+        toast.dismiss();
       }
     }
 

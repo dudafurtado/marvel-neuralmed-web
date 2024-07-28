@@ -16,9 +16,7 @@ import {
 const baseUrl = process.env.NEXT_PUBLIC_MARVEL_BASE_URL as string;
 const params = paramsUrlMarvel();
 
-export async function listCharacters(offset?: number) {
-  offset = offset ?? 0;
-
+export async function listCharacters(offset: number) {
   const pagination = `&limit=10&offset=${offset}`;
   const url = `${baseUrl}/v1/public/characters${params}${pagination}`;
   const res = await fetch(url);
@@ -32,12 +30,12 @@ export async function listCharacters(offset?: number) {
 
   return {
     results: data.data.results as MarvelCharacter[],
-    totalPages: data.data.total as number,
+    total: data.data.total as number,
   };
 }
 
 export async function characterDetails(id: number) {
-  const characterId = `/${id}`;
+  const characterId = `/${id | 1009146}`;
   const url = `${baseUrl}/v1/public/characters${characterId}${params}`;
   const res = await fetch(url);
 
@@ -52,7 +50,7 @@ export async function characterDetails(id: number) {
 }
 
 export async function characterLists(id: number, typeOfList: string) {
-  const characterId = `/${id}`;
+  const characterId = `/${id | 1009146}`;
   const url = `${baseUrl}/v1/public/characters${characterId}/${typeOfList}${params}`;
   const res = await fetch(url);
 

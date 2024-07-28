@@ -4,7 +4,7 @@ import renderPageNumbers from '@/utils/pagination';
 import { useEffect, useState } from 'react';
 
 export default function FooterPagination() {
-  const { currentPage, setCurrentPage, totalOfPages } = useMyContext();
+  const { currentPage, setCurrentPage, totalOfCharacters } = useMyContext();
   const [pages, setPages] = useState<(number | string)[]>([]);
 
   function handlePageChange(pageNumber: number | string): void {
@@ -14,9 +14,8 @@ export default function FooterPagination() {
   }
 
   useEffect(() => {
-    const arrayOfPages = renderPageNumbers(currentPage, totalOfPages);
-    setPages(arrayOfPages);
-  }, [currentPage]);
+    setPages(renderPageNumbers(currentPage, totalOfCharacters));
+  }, [totalOfCharacters, currentPage]);
 
   return (
     <nav className="flex items-center justify-center space-x-2 border-t-2 border-border-grey py-2.5 mt-4">

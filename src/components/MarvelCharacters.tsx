@@ -1,10 +1,10 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { listCharacters } from '@/server/fetchMarvelAPI';
 import mapSeriesAndEvents from '@/utils/mapSeriesAndEvents';
 import {
-  Character,
   MarvelCharacter,
   SeriesAndEventsModified,
 } from '@/interfaces/characterListInterfaces';
@@ -14,14 +14,21 @@ import useMyContext from '@/contexts/useMyContext';
 export default function MarvelCharacters() {
   const [allData, setAllData] = useState<MarvelCharacter[]>([]);
   const [characters, setCharacters] = useState<MarvelCharacter[]>([]);
-  const { searchTerm, setTotalOfPages } = useMyContext();
+  const { searchTerm, setTotalOfCharacters, setCharacterId, currentPage } =
+    useMyContext();
+  const router = useRouter();
+
+  function handleShowCharacterDetails(characterId: number) {
+    setCharacterId(characterId);
+    router.push('/character');
+  }
 
   useEffect(() => {
     async function loadCharacters() {
       try {
         toast.loading('Waiting...');
 
-        let { results, totalPages }: any = await listCharacters(30);
+        let { results, total }: any = await listCharacters((currentPage - 1) * 10);
         results = results.map((character: MarvelCharacter) => {
           return {
             id: character.id,
@@ -37,19 +44,20 @@ export default function MarvelCharacters() {
             ),
           };
         });
-        setAllData(results);
-        setCharacters(results);
-        setTotalOfPages(totalPages);
 
-        toast.dismiss();
+        setAllData(results);
+        setCharacters(results.slice(0, 10));
+        setTotalOfCharacters(total);
       } catch (err: unknown) {
         const error = err as MarvelError;
         toast.error(`Error: ${error.message}`);
+      } finally {
+        toast.dismiss();
       }
     }
 
     loadCharacters();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     const contentSearched = allData.filter((character) =>
@@ -71,6 +79,7 @@ export default function MarvelCharacters() {
           <section
             key={character.id}
             className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4"
+            onClick={() => handleShowCharacterDetails(character.id)}
           >
             <div className="flex items-center gap-4">
               <img src={character.src} alt="" className="w-11 h-11" />
