@@ -14,15 +14,15 @@ import useMyContext from '@/contexts/useMyContext';
 export default function MarvelCharacters() {
   const [allData, setAllData] = useState<MarvelCharacter[]>([]);
   const [characters, setCharacters] = useState<MarvelCharacter[]>([]);
-  const { searchTerm } = useMyContext();
+  const { searchTerm, setTotalOfPages } = useMyContext();
 
   useEffect(() => {
     async function loadCharacters() {
       try {
         toast.loading('Waiting...');
 
-        let data: any = await listCharacters(30);
-        data = data.map((character: MarvelCharacter) => {
+        let { results, totalPages }: any = await listCharacters(30);
+        results = results.map((character: MarvelCharacter) => {
           return {
             id: character.id,
             name: character.name,
@@ -37,8 +37,9 @@ export default function MarvelCharacters() {
             ),
           };
         });
-        setAllData(data);
-        setCharacters(data);
+        setAllData(results);
+        setCharacters(results);
+        setTotalOfPages(totalPages);
 
         toast.dismiss();
       } catch (err: unknown) {
@@ -51,11 +52,11 @@ export default function MarvelCharacters() {
   }, []);
 
   useEffect(() => {
-    const contentSeached = allData.filter((character) =>
+    const contentSearched = allData.filter((character) =>
       character.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    setCharacters(contentSeached);
+    setCharacters(contentSearched);
   }, [searchTerm]);
 
   return (

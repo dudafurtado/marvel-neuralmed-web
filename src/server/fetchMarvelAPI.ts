@@ -30,9 +30,10 @@ export async function listCharacters(offset?: number) {
 
   const data: MarvelResponse = await res.json();
 
-  // console.log(data.data.total);
-
-  return data.data.results as MarvelCharacter[];
+  return {
+    results: data.data.results as MarvelCharacter[],
+    totalPages: data.data.total as number,
+  };
 }
 
 export async function characterDetails(id: number) {
