@@ -1,10 +1,17 @@
+'use client';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Logo from '../../public/logo-neuralmed.svg';
 
 export default function Header() {
+  const router = useRouter();
+
   return (
     <header className="w-full flex items-center justify-between px-9 py-3 text-white border-b border-b-neural-blue">
-      <section className="flex items-center gap-4">
+      <section
+        className="flex items-center gap-4 cursor-pointer"
+        onClick={() => router.push('/home')}
+      >
         <Image src={Logo} alt="Logo da empresa NeuralMed" width={28} height={32} />
         <strong>
           Neural
