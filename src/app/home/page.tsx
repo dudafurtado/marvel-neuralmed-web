@@ -9,7 +9,7 @@ export default async function Home() {
       <Header />
       <SearchCharacter />
       <MarvelCharacters />
-      <FooterPagination totalPages={127} />
+      <FooterPagination />
     </article>
   );
 }
