@@ -1,13 +1,13 @@
 # Marvel NeuralMed
 
-Este projeto é um desafio técnico de front-end para a empresa NeuralMed, utilizando a API da Marvel para listar e detalhar personagens.
+Esse projeto, desenvolvido por Maria Eduarda Furtado, é um desafio técnico de front-end para uma vaga de desenvolvimento fullstack web da empresa NeuralMed. Foi utilizado a API da Marvel para listar e detalhar personagens com a finalidade de mostrar boas práticas de programação e organização de código.
 
 ## Tecnologias Utilizadas
 
-- **NextJS 14**
-- **TypeScript**
-- **Tailwind CSS**
-- **API da Marvel**
+- **NextJS 14:** Framework React para Web
+- **TypeScript:** Linguagem de Programação
+- **Tailwind:** Framework CSS para estilização
+- **API da Marvel:** [https://developer.marvel.com/docs](https://developer.marvel.com/docs)
 
 ## Deploy no Vercel
 
@@ -20,24 +20,25 @@ O projeto foi deployado no Vercel e pode ser acessado pelas seguintes URLs:
 
 ## Repositório Público no GitHub
 
-O código fonte do projeto está disponível em um repositório público no GitHub:
+O código fonte do projeto está disponível em um repositório público na conta do GitHub de Maria Eduarda:
 
-- [https://github.com/dudafurtado/marvel-neuralmed-web](https://github.com/dudafurtado/marvel-neuralmed-web)
+- [Marvel Neural Med](https://github.com/dudafurtado/marvel-neuralmed-web)
 
-## Layout Responsivo
+## Layout
 
-### Página de Listagem de Personagens (Home)
+Para o layout, foi dado prioridade para valores de medida rem para que as páginas seguissem um modelo responsivo. O design foi fornecido pela empresa pelo Figma.
 
-- Exibir os 10 primeiros resultados da API
-- Permitir filtrar por nome, pelo campo de busca
-- Paginação
+- [Marvel Design](<https://www.figma.com/design/KGaZDqW32GrKRI8b1YZzOL/Marvel-(New)?node-id=1-3&m=dev&t=TjrJNq3uaC1lgHjM-1>)
 
-### Página de Detalhe do Personagem (Character)
+## Páginas
 
-- Exibir dados do personagem
-- Exibir lista de histórias em quadrinhos do personagem
-- Exibir lista de eventos do personagem
-- Exibir lista de séries do personagem
+### Tela inicial ('/' ou '/home')
+
+Na tela inicial, 10 personagens por vez serão mostrados na página também chamada de home. A paginação permite que o usuário pesquise manualmente por outros valores, mas também é possível pesquisar personagens pelo nome no campo de buscar.
+
+### Personagem ('/character')
+
+Na tela do personagem, será exibido nome, imagem, descrição e listas referentes as histórias em quadrinhos, eventos e séries de um personagem específico, ao qual sera acessado ao clicar em um dos resultados da tela inicial.
 
 ## Testes Unitários
 
@@ -56,3 +57,5 @@ pnpm dev
 # or
 bun dev
 ```
+
+Segundo, configure o arquivo **.env.local**.
