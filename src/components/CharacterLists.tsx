@@ -5,30 +5,21 @@ import { characterLists } from '@/server/fetchMarvelAPI';
 import { MarvelError } from '@/interfaces/errorInterface';
 import { DataRestructured } from '@/interfaces/characterDataCleanedInterface';
 import useMyContext from '@/contexts/useMyContext';
+import { dataCharacterContent } from '@/utils/cleaningDataFetch';
 
 export default function CharacterLists({ typeOfList }: any) {
-  const [content, setContent] = useState<DataRestructured[]>([]);
-  const { characterId } = useMyContext();
+  const [content, setContent] = useState<any[]>([]);
+  const { character } = useMyContext();
 
   useEffect(() => {
-    async function loadCharacterEvents() {
+    async function loadCharacterContent() {
       try {
-        toast.loading('Waiting...');
+        toast.loading('Carregando conteúdo...');
 
-        const data = await characterLists(characterId, typeOfList);
-        const dataCleaned: any = data.map((item) => {
-          return {
-            id: item.id,
-            title: item.title,
-            description: item.description
-              ? `${item.description.substring(0, 100)}...`
-              : '',
-            src: item.thumbnail
-              ? `${item.thumbnail.path}.${item.thumbnail.extension}`
-              : '',
-          };
-        });
-        setContent(dataCleaned);
+        let data = await characterLists(character.urls, typeOfList);
+        data = dataCharacterContent(data);
+
+        setContent(data);
 
         toast.dismiss();
       } catch (err: unknown) {
@@ -39,15 +30,15 @@ export default function CharacterLists({ typeOfList }: any) {
       }
     }
 
-    loadCharacterEvents();
+    loadCharacterContent();
   }, []);
 
   return (
     <>
-      <section className="text-inter mb-24 px-32">
+      <section className="px-32 mb-24 text-inter">
         <h2 className="font-semibold text-lg text-muted-foreground mb-5">
-          {typeOfList === 'stories'
-            ? 'Histórias'
+          {typeOfList === 'comics'
+            ? 'Histórias em quadrinhos'
             : typeOfList === 'events'
             ? 'Eventos'
             : 'Séries'}
@@ -56,11 +47,7 @@ export default function CharacterLists({ typeOfList }: any) {
           {content.map((content: DataRestructured) => (
             <section
               key={content.id}
-              className={
-                typeOfList === 'stories'
-                  ? 'border border-border-grey w-64 h-52'
-                  : 'border border-border-grey w-64 h-custom-110'
-              }
+              className="w-64 h-custom-110 border border-border-grey rounded"
             >
               {content.src ? (
                 <img

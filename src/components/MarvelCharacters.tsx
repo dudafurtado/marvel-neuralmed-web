@@ -3,47 +3,29 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { listCharacters } from '@/server/fetchMarvelAPI';
-import mapSeriesAndEvents from '@/utils/mapSeriesAndEvents';
-import {
-  MarvelCharacter,
-  SeriesAndEventsModified,
-} from '@/interfaces/characterListInterfaces';
+import { SeriesAndEventsModified } from '@/interfaces/characterListInterfaces';
 import { MarvelError } from '@/interfaces/errorInterface';
 import useMyContext from '@/contexts/useMyContext';
+import { dataCharacters } from '@/utils/cleaningDataFetch';
 
 export default function MarvelCharacters() {
-  const [allData, setAllData] = useState<MarvelCharacter[]>([]);
-  const [characters, setCharacters] = useState<MarvelCharacter[]>([]);
-  const { searchTerm, setTotalOfCharacters, setCharacterId, currentPage } =
-    useMyContext();
+  const [allData, setAllData] = useState<any[]>([]);
+  const [characters, setCharacters] = useState<any[]>([]);
+  const { searchTerm, currentPage, setTotalOfCharacters, setCharacter } = useMyContext();
   const router = useRouter();
 
-  function handleShowCharacterDetails(characterId: number) {
-    setCharacterId(characterId);
+  function handleShowCharacterDetails(character: any) {
+    setCharacter(character);
     router.push('/character');
   }
 
   useEffect(() => {
     async function loadCharacters() {
       try {
-        toast.loading('Waiting...');
+        toast.loading('Carregando conteúdo...');
 
         let { results, total }: any = await listCharacters((currentPage - 1) * 10);
-        results = results.map((character: MarvelCharacter) => {
-          return {
-            id: character.id,
-            name: character.name,
-            src: character.thumbnail.path + '.' + character.thumbnail.extension,
-            series: mapSeriesAndEvents(
-              character.series.items,
-              'Nenhuma serie encontrada'
-            ),
-            events: mapSeriesAndEvents(
-              character.events.items,
-              'Nenhum evento encontrado'
-            ),
-          };
-        });
+        results = dataCharacters(results);
 
         setAllData(results);
         setCharacters(results.slice(0, 10));
@@ -69,7 +51,7 @@ export default function MarvelCharacters() {
 
   return (
     <>
-      <main className="w-full px-9 overflow-x-hidden text-white text-inter">
+      <main className="max-w-max px-9 text-white text-inter">
         <section className="grid grid-cols-3 gap-4 text-left text-muted-foreground font-semibold text-base mb-4">
           <div className="font-bold">Personagem</div>
           <div className="font-bold">Séries</div>
@@ -78,8 +60,8 @@ export default function MarvelCharacters() {
         {characters.map((character: any) => (
           <section
             key={character.id}
-            className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4"
-            onClick={() => handleShowCharacterDetails(character.id)}
+            className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4 cursor-pointer"
+            onClick={() => handleShowCharacterDetails(character)}
           >
             <div className="flex items-center gap-4">
               <img src={character.src} alt="" className="w-11 h-11" />

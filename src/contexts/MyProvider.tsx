@@ -10,7 +10,17 @@ export default function MyProvider({ children }: MyProviderProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [totalOfCharacters, setTotalOfCharacters] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [characterId, setCharacterId] = useState<number>(0);
+  const [character, setCharacter] = useState<any>({
+    id: 0,
+    name: '',
+    description: '',
+    src: '',
+    urls: {
+      comics: '',
+      events: '',
+      series: '',
+    },
+  });
 
   const values = {
     searchTerm,
@@ -19,8 +29,8 @@ export default function MyProvider({ children }: MyProviderProps) {
     setTotalOfCharacters,
     currentPage,
     setCurrentPage,
-    characterId,
-    setCharacterId,
+    character,
+    setCharacter,
   };
 
   return <MyContext.Provider value={values}>{children}</MyContext.Provider>;
