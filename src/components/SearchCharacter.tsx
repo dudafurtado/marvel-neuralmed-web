@@ -25,7 +25,7 @@ export default function SearchCharacter() {
           <Image
             src={SearchLogo}
             alt="Icone de pesquisa"
-            className="relative right-7 top-0"
+            className="w-auto relative right-7 top-0"
             width={16}
             height={16}
           />
