@@ -58,7 +58,7 @@ export default function MarvelCharacters() {
 
   return (
     <>
-      <main className="max-w-max px-9 text-white text-inter">
+      <main className="px-9 text-white text-inter">
         <section className="grid grid-cols-3 gap-4 text-left text-muted-foreground font-semibold text-base mb-4">
           <div className="font-bold">Personagem</div>
           <div className="font-bold">Séries</div>

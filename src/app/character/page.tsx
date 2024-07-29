@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 
 export default function Character() {
   return (
-    <article className="min-h-screen max-w-max bg-background">
+    <article className="min-h-screen w-full bg-background">
       <Header />
       <CharacterDetails />
       <main className="flex flex-col gap-6">
