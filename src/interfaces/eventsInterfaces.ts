@@ -1,4 +1,4 @@
-export default interface MarvelEventResponse {
+export interface MarvelEventResponse {
   code: number;
   status: string;
   copyright: string;

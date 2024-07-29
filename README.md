@@ -7,7 +7,7 @@ Esse projeto, desenvolvido por Maria Eduarda Furtado, é um desafio técnico de 
 - **NextJS 14:** Framework React para Web
 - **TypeScript:** Linguagem de Programação
 - **Tailwind:** Framework CSS para estilização
-- **API da Marvel:** [https://developer.marvel.com/docs](https://developer.marvel.com/docs)
+- [**API da Marvel**](https://developer.marvel.com/docs)
 
 ## Deploy no Vercel
 

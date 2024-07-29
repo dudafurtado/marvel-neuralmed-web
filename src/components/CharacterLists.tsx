@@ -1,14 +1,20 @@
 'use client';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { characterLists } from '@/server/fetchMarvelAPI';
+import { characterDetailContent } from '@/server/fetchMarvelAPI';
 import { MarvelError } from '@/interfaces/errorInterface';
-import { DataRestructured } from '@/interfaces/characterDataCleanedInterface';
 import useMyContext from '@/contexts/useMyContext';
 import { dataCharacterContent } from '@/utils/cleaningDataFetch';
+import { MarvelComic } from '@/interfaces/comicsInterfaces';
+import { MarvelEvent } from '@/interfaces/eventsInterfaces';
+import { MarvelSeries } from '@/interfaces/seriesInterfaces';
+import {
+  CharacterListsModified,
+  UrlsCharacterContent,
+} from '@/interfaces/characterDetailsInterfaces';
 
-export default function CharacterLists({ typeOfList }: any) {
-  const [content, setContent] = useState<any[]>([]);
+export default function CharacterLists({ typeOfList }: { typeOfList: string }) {
+  const [content, setContent] = useState<CharacterListsModified[]>([]);
   const { character } = useMyContext();
 
   useEffect(() => {
@@ -16,10 +22,11 @@ export default function CharacterLists({ typeOfList }: any) {
       try {
         toast.loading('Carregando conteúdo...');
 
-        let data = await characterLists(character.urls, typeOfList);
-        data = dataCharacterContent(data);
+        const data: MarvelComic[] | MarvelEvent[] | MarvelSeries[] =
+          await characterDetailContent(character.urls, typeOfList);
+        const newData: CharacterListsModified[] = dataCharacterContent(data);
 
-        setContent(data);
+        setContent(newData);
 
         toast.dismiss();
       } catch (err: unknown) {
@@ -44,7 +51,7 @@ export default function CharacterLists({ typeOfList }: any) {
             : 'Séries'}
         </h2>
         <section className="flex flex-wrap gap-10 text-white">
-          {content.map((content: DataRestructured) => (
+          {content.map((content: any) => (
             <section
               key={content.id}
               className="w-64 h-custom-110 border border-border-grey rounded"

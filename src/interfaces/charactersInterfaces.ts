@@ -1,14 +1,16 @@
-export interface MarvelResponse {
+import { UrlsCharacterContent } from './characterDetailsInterfaces';
+
+export interface MarvelCharactersResponse {
   code: number;
   status: string;
   copyright: string;
   attributionText: string;
   attributionHTML: string;
   etag: string;
-  data: MarvelData;
+  data: MarvelCharactersData;
 }
 
-interface MarvelData {
+interface MarvelCharactersData {
   offset: number;
   limit: number;
   total: number;
@@ -94,10 +96,24 @@ export interface SeriesAndEventsModified {
   name: string;
 }
 
-export interface Character {
+export interface CharactersDataModified {
   id: number;
   name: string;
+  description: string;
   src: string;
   series: SeriesAndEventsModified[];
   events: SeriesAndEventsModified[];
+  urls: UrlsCharacterContent;
+}
+
+export interface DataRestructured {
+  id: number;
+  title: string;
+  description: string;
+  src?: string;
+}
+
+export interface ResultOfListCharacter {
+  results: MarvelCharacter[];
+  total: number;
 }

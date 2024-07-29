@@ -9,8 +9,8 @@ export default function paramsUrlMarvel() {
     throw new Error('Missing API keys');
   }
 
-  const hash = MD5(ts + privateKey + publicKey).toString();
-  const params = `?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
+  const hash: string = MD5(ts + privateKey + publicKey).toString();
+  const params: string = `?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 
   return params;
 }

@@ -2,17 +2,17 @@ export default function renderPageNumbers(
   currentPage: number,
   totalOfCharacters: number
 ): (number | string)[] {
-  const totalOfPages = Math.round(totalOfCharacters / 10);
+  const totalOfPages: number = Math.round(totalOfCharacters / 10);
   const pageNumbers: (number | string)[] = [];
-  const maxPagesToShow = 5;
+  const maxPagesToShow: number = 5;
 
   if (totalOfPages <= maxPagesToShow) {
     for (let i = 1; i <= totalOfPages; i++) {
       pageNumbers.push(i);
     }
   } else {
-    const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
-    const endPage = Math.min(totalOfPages, startPage + maxPagesToShow - 1);
+    const startPage: number = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    const endPage: number = Math.min(totalOfPages, startPage + maxPagesToShow - 1);
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(i);

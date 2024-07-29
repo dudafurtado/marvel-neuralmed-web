@@ -1,16 +1,14 @@
 'use client';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import MyContext from './MyContext';
-
-interface MyProviderProps {
-  children: ReactNode;
-}
+import { MyProviderProps } from '@/interfaces/contextInterfaces';
+import { CharacterContentModified } from '@/interfaces/characterDetailsInterfaces';
 
 export default function MyProvider({ children }: MyProviderProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [totalOfCharacters, setTotalOfCharacters] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [character, setCharacter] = useState<any>({
+  const [character, setCharacter] = useState<CharacterContentModified>({
     id: 0,
     name: '',
     description: '',

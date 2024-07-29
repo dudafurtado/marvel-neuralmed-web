@@ -5,7 +5,7 @@ import FooterPagination from '@/components/FooterPagination';
 
 export default async function Home() {
   return (
-    <article className="min-h-screen w-screen bg-background">
+    <article className="min-h-screen w-full  bg-background">
       <Header />
       <SearchCharacter />
       <MarvelCharacters />

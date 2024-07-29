@@ -3,19 +3,24 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { listCharacters } from '@/server/fetchMarvelAPI';
-import { SeriesAndEventsModified } from '@/interfaces/characterListInterfaces';
+import {
+  CharactersDataModified,
+  ResultOfListCharacter,
+  SeriesAndEventsModified,
+} from '@/interfaces/charactersInterfaces';
 import { MarvelError } from '@/interfaces/errorInterface';
 import useMyContext from '@/contexts/useMyContext';
 import { dataCharacters } from '@/utils/cleaningDataFetch';
 
 export default function MarvelCharacters() {
-  const [allData, setAllData] = useState<any[]>([]);
-  const [characters, setCharacters] = useState<any[]>([]);
-  const { searchTerm, currentPage, setTotalOfCharacters, setCharacter } = useMyContext();
   const router = useRouter();
+  const { searchTerm, currentPage, setTotalOfCharacters, setCharacter } = useMyContext();
+  const [allData, setAllData] = useState<CharactersDataModified[]>([]);
+  const [characters, setCharacters] = useState<CharactersDataModified[]>([]);
 
-  function handleShowCharacterDetails(character: any) {
-    setCharacter(character);
+  function handleShowCharacterDetails(character: CharactersDataModified) {
+    const { series, events, ...arg } = character;
+    setCharacter(arg);
     router.push('/character');
   }
 
@@ -24,11 +29,13 @@ export default function MarvelCharacters() {
       try {
         toast.loading('Carregando conteúdo...');
 
-        let { results, total }: any = await listCharacters((currentPage - 1) * 10);
-        results = dataCharacters(results);
+        let { results, total }: ResultOfListCharacter = await listCharacters(
+          (currentPage - 1) * 10
+        );
+        const newResult = dataCharacters(results);
 
-        setAllData(results);
-        setCharacters(results.slice(0, 10));
+        setAllData(newResult);
+        setCharacters(newResult.slice(0, 10));
         setTotalOfCharacters(total);
       } catch (err: unknown) {
         const error = err as MarvelError;
@@ -42,7 +49,7 @@ export default function MarvelCharacters() {
   }, [currentPage]);
 
   useEffect(() => {
-    const contentSearched = allData.filter((character) =>
+    const contentSearched: CharactersDataModified[] = allData.filter((character) =>
       character.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 

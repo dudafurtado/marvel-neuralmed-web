@@ -89,9 +89,23 @@ interface URL {
   url: string;
 }
 
-export interface CharacterModified {
+export interface CharacterContentModified {
   id: number;
   name: string;
+  description: string;
+  src: string;
+  urls: UrlsCharacterContent;
+}
+
+export interface UrlsCharacterContent {
+  comics: string;
+  events: string;
+  series: string;
+}
+
+export interface CharacterListsModified {
+  id: number;
+  title: string;
   description: string;
   src: string;
 }
