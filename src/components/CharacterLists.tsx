@@ -8,10 +8,7 @@ import { dataCharacterContent } from '@/utils/cleaningDataFetch';
 import { MarvelComic } from '@/interfaces/comicsInterfaces';
 import { MarvelEvent } from '@/interfaces/eventsInterfaces';
 import { MarvelSeries } from '@/interfaces/seriesInterfaces';
-import {
-  CharacterListsModified,
-  UrlsCharacterContent,
-} from '@/interfaces/characterDetailsInterfaces';
+import { CharacterListsModified } from '@/interfaces/characterDetailsInterfaces';
 
 export default function CharacterLists({ typeOfList }: { typeOfList: string }) {
   const [content, setContent] = useState<CharacterListsModified[]>([]);
