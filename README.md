@@ -40,9 +40,9 @@ Na tela inicial, 10 personagens por vez serão mostrados na página também cham
 
 Na tela do personagem, será exibido nome, imagem, descrição e listas referentes as histórias em quadrinhos, eventos e séries de um personagem específico, ao qual sera acessado ao clicar em um dos resultados da tela inicial.
 
-## Testes Unitários
+## Testes
 
-Os testes unitários foram implementados utilizando Vitest e React Testing Library.
+Os testes unitários foram implementados utilizando Vitest e React Testing Library. Componentes de UI foram colocados em testes, ao verificar se renderizam corretamente com os dados fornecidos. Testes de interações do usuário, como cliques em botões e mudanças de estado. Além de funções de utilidade que manipulem dados ou lógica de negócios. As chamadas de API, ao usar Mock para as respostas da API e conferir se os componentes consomem e exibem os dados corretamente. Por fim, se a navegação entre páginas funciona corretamente.
 
 ## Como Rodar o Projeto Localmente
 
