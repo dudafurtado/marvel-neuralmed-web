@@ -14,7 +14,6 @@ const params: string = paramsUrlMarvel();
 export async function listCharacters(offset: number) {
   const pagination: string = `&limit=10&offset=${offset}`;
   const url: string = `${baseUrl}/v1/public/characters${params}${pagination}`;
-  console.log(url);
   const res: Response = await fetch(url);
 
   if (!res.ok) {

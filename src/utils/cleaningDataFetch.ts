@@ -28,9 +28,9 @@ export function dataCharacters(data: MarvelCharacter[]) {
       series: mapSeriesAndEvents(character.series.items, 'Nenhuma serie encontrada'),
       events: mapSeriesAndEvents(character.events.items, 'Nenhum evento encontrado'),
       urls: {
-        comics: character.comics.collectionURI,
-        events: character.events.collectionURI,
-        series: character.series.collectionURI,
+        comics: character.comics.collectionURI.replace('http://', 'https://'),
+        events: character.events.collectionURI.replace('http://', 'https://'),
+        series: character.series.collectionURI.replace('http://', 'https://'),
       },
     };
   });
