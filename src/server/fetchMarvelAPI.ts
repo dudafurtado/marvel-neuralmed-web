@@ -38,7 +38,6 @@ export async function characterDetailContent(
 
   const type = typeOfList as TypeOfList;
   const url: string = `${urls[type]}${params}`;
-  console.log(url);
   const res: Response = await fetch(url);
 
   if (!res.ok) {
