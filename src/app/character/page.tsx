@@ -1,6 +1,6 @@
+import Header from '@/components/Header';
 import CharacterDetails from '@/components/CharacterDetails';
 import CharacterLists from '@/components/CharacterLists';
-import Header from '@/components/Header';
 
 export default function Character() {
   return (
