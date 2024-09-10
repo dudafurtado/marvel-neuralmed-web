@@ -11,24 +11,21 @@ Esse projeto, desenvolvido por Maria Eduarda Furtado, é um desafio técnico de 
 
 ## Deploy no Vercel
 
-O projeto foi deployado no Vercel e pode ser acessado pelas seguintes URLs:
+O projeto foi deployado no Vercel e pode ser acessado pelas seguinte URL:
 
-- [https://marvel-neuralmed-web.vercel.app/](https://marvel-neuralmed-web.vercel.app/)
-- [https://marvel-neuralmed-web-dudafurtados-projects.vercel.app/](https://marvel-neuralmed-web-dudafurtados-projects.vercel.app/)
-- [https://marvel-neuralmed-web-git-main-dudafurtados-projects.vercel.app/](https://marvel-neuralmed-web-git-main-dudafurtados-projects.vercel.app/)
-- [https://marvel-neuralmed-fx4eeboks-dudafurtados-projects.vercel.app/](https://marvel-neuralmed-fx4eeboks-dudafurtados-projects.vercel.app/)
+- [Deploy Marvel](https://marvel-neuralmed-web.vercel.app/)
 
 ## Repositório Público no GitHub
 
 O código fonte do projeto está disponível em um repositório público na conta do GitHub de Maria Eduarda:
 
-- [Marvel Neural Med](https://github.com/dudafurtado/marvel-neuralmed-web)
+- [Github Marvel](https://github.com/dudafurtado/marvel-neuralmed-web)
 
 ## Layout
 
 Para o layout, foi dado prioridade para valores de medida rem para que as páginas seguissem um modelo responsivo. O design foi fornecido pela empresa pelo Figma.
 
-- [Marvel Design](<https://www.figma.com/design/KGaZDqW32GrKRI8b1YZzOL/Marvel-(New)?node-id=1-3&m=dev&t=TjrJNq3uaC1lgHjM-1>)
+- [Design Marvel](<https://www.figma.com/design/KGaZDqW32GrKRI8b1YZzOL/Marvel-(New)?node-id=1-3&m=dev&t=TjrJNq3uaC1lgHjM-1>)
 
 ## Páginas
 
