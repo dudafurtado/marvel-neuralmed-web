@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { listCharacters } from '@/server/fetchMarvelAPI';
+import useMyContext from '@/contexts/useMyContext';
 import {
   CharactersDataModified,
   ResultOfListCharacter,
   SeriesAndEventsModified,
 } from '@/interfaces/charactersInterfaces';
 import { MarvelError } from '@/interfaces/errorInterface';
-import useMyContext from '@/contexts/useMyContext';
 import { dataCharacters } from '@/utils/cleaningDataFetch';
 
 export default function MarvelCharacters() {
@@ -19,6 +19,7 @@ export default function MarvelCharacters() {
   const [characters, setCharacters] = useState<CharactersDataModified[]>([]);
 
   function handleShowCharacterDetails(character: CharactersDataModified) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { series, events, ...arg } = character;
     setCharacter(arg);
     router.push('/character');
@@ -29,7 +30,7 @@ export default function MarvelCharacters() {
       try {
         toast.loading('Carregando conteúdo...');
 
-        let { results, total }: ResultOfListCharacter = await listCharacters(
+        const { results, total }: ResultOfListCharacter = await listCharacters(
           (currentPage - 1) * 10
         );
         const newResult = dataCharacters(results);
@@ -64,7 +65,7 @@ export default function MarvelCharacters() {
           <div className="font-bold">Séries</div>
           <div className="font-bold">Eventos</div>
         </section>
-        {characters.map((character: any) => (
+        {characters.map((character: CharactersDataModified) => (
           <section
             key={character.id}
             className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4 cursor-pointer"

@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { characterDetailContent } from '@/server/fetchMarvelAPI';
-import { MarvelError } from '@/interfaces/errorInterface';
 import useMyContext from '@/contexts/useMyContext';
 import { dataCharacterContent } from '@/utils/cleaningDataFetch';
+import { MarvelError } from '@/interfaces/errorInterface';
 import { MarvelComic } from '@/interfaces/comicsInterfaces';
 import { MarvelEvent } from '@/interfaces/eventsInterfaces';
 import { MarvelSeries } from '@/interfaces/seriesInterfaces';
@@ -48,7 +48,7 @@ export default function CharacterLists({ typeOfList }: { typeOfList: string }) {
             : 'Séries'}
         </h2>
         <section className="flex flex-wrap gap-10 text-white">
-          {content.map((content: any) => (
+          {content.map((content: CharacterListsModified) => (
             <section
               key={content.id}
               className="w-64 h-custom-110 border border-border-grey rounded"
