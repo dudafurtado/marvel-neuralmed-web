@@ -42,9 +42,9 @@ export function dataCharacterContent(
   return data.map((content: MarvelComic | MarvelEvent | MarvelSeries) => {
     return {
       id: content.id,
-      title: content.title,
+      title: `${content.title.substring(0, 30)}...`,
       description: content.description
-        ? `${content.description.substring(0, 100)}...`
+        ? `${content.description.substring(0, 80)}...`
         : '',
       src: content.thumbnail
         ? `${content.thumbnail.path}.${content.thumbnail.extension}`
