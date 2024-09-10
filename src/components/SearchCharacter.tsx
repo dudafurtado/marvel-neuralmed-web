@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
-import SearchLogo from '../../public/search-logo.svg';
 import useMyContext from '@/contexts/useMyContext';
+import SearchLogo from '@/assets/search-logo.svg';
 
 export default function SearchCharacter() {
   const { setSearchTerm } = useMyContext();

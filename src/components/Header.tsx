@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import Logo from '../../public/logo-neuralmed.svg';
+import Logo from '@/assets/logo-neuralmed.svg';
 
 export default function Header() {
   const router = useRouter();
