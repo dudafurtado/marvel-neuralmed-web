@@ -4,7 +4,7 @@ import useMyContext from '@/contexts/useMyContext';
 import renderPageNumbers from '@/utils/pagination';
 
 export default function FooterPagination() {
-  const { currentPage, setCurrentPage, totalOfCharacters } = useMyContext();
+  const { currentPage, setCurrentPage, howManyCharacters } = useMyContext();
   const [pages, setPages] = useState<(number | string)[]>([]);
 
   function handlePageChange(page: number | string): void {
@@ -14,8 +14,8 @@ export default function FooterPagination() {
   }
 
   useEffect(() => {
-    setPages(renderPageNumbers(currentPage, totalOfCharacters));
-  }, [totalOfCharacters, currentPage]);
+    setPages(renderPageNumbers(currentPage, howManyCharacters));
+  }, [currentPage, howManyCharacters]);
 
   return (
     <nav className="flex items-center justify-center space-x-2 border-t-2 border-border-grey py-2.5 mt-8">

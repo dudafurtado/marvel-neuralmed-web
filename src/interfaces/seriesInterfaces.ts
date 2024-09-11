@@ -100,6 +100,6 @@ interface MarvelComicItem {
 interface MarvelEvents {
   available: number;
   collectionURI: string;
-  items: any[];
+  items: unknown[];
   returned: number;
 }

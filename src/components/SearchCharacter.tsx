@@ -1,10 +1,22 @@
 'use client';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import useMyContext from '@/contexts/useMyContext';
 import SearchLogo from '@/assets/search-logo.svg';
+import { CharactersDataModified } from '@/interfaces/charactersInterfaces';
 
 export default function SearchCharacter() {
-  const { setSearchTerm } = useMyContext();
+  const { searchTerm, setSearchTerm, allData, setCharacters } = useMyContext();
+
+  useEffect(() => {
+    const contentSearched: CharactersDataModified[] = allData
+      .filter((character) => {
+        return character.name.toLowerCase().includes(searchTerm.toLowerCase());
+      })
+      .slice(0, 10);
+
+    setCharacters(contentSearched);
+  }, [searchTerm]);
 
   return (
     <section className="text-white font-inter px-8 mb-5 mt-8">

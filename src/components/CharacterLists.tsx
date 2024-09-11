@@ -12,7 +12,7 @@ import { CharacterListsModified } from '@/interfaces/characterDetailsInterfaces'
 
 export default function CharacterLists({ typeOfList }: { typeOfList: string }) {
   const [content, setContent] = useState<CharacterListsModified[]>([]);
-  const { character } = useMyContext();
+  const { currentCharacter } = useMyContext();
 
   useEffect(() => {
     async function loadCharacterContent() {
@@ -20,7 +20,7 @@ export default function CharacterLists({ typeOfList }: { typeOfList: string }) {
         toast.loading('Carregando conteúdo...');
 
         const data: MarvelComic[] | MarvelEvent[] | MarvelSeries[] =
-          await characterDetailContent(character.urls, typeOfList);
+          await characterDetailContent(currentCharacter.urls, typeOfList);
         const newData: CharacterListsModified[] = dataCharacterContent(data);
 
         setContent(newData);

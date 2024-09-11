@@ -3,12 +3,15 @@ import { useState } from 'react';
 import MyContext from './MyContext';
 import { MyProviderProps } from '@/interfaces/contextInterfaces';
 import { CharacterContentModified } from '@/interfaces/characterDetailsInterfaces';
+import { CharactersDataModified } from '@/interfaces/charactersInterfaces';
 
 export default function MyProvider({ children }: MyProviderProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [totalOfCharacters, setTotalOfCharacters] = useState<number>(0);
+  const [howManyCharacters, setHowManyCharacters] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [character, setCharacter] = useState<CharacterContentModified>({
+  const [allData, setAllData] = useState<CharactersDataModified[]>([]);
+  const [characters, setCharacters] = useState<CharactersDataModified[]>([]);
+  const [currentCharacter, setCurrentCharacter] = useState<CharacterContentModified>({
     id: 0,
     name: '',
     description: '',
@@ -23,12 +26,16 @@ export default function MyProvider({ children }: MyProviderProps) {
   const values = {
     searchTerm,
     setSearchTerm,
-    totalOfCharacters,
-    setTotalOfCharacters,
+    howManyCharacters,
+    setHowManyCharacters,
     currentPage,
     setCurrentPage,
-    character,
-    setCharacter,
+    allData,
+    setAllData,
+    currentCharacter,
+    setCurrentCharacter,
+    characters,
+    setCharacters,
   };
 
   return <MyContext.Provider value={values}>{children}</MyContext.Provider>;

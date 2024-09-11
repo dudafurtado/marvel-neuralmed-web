@@ -1,12 +1,11 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { listCharacters } from '@/server/fetchMarvelAPI';
 import useMyContext from '@/contexts/useMyContext';
 import {
   CharactersDataModified,
-  ResultOfListCharacter,
   SeriesAndEventsModified,
 } from '@/interfaces/charactersInterfaces';
 import { MarvelError } from '@/interfaces/errorInterface';
@@ -14,30 +13,51 @@ import { dataCharacters } from '@/utils/cleaningDataFetch';
 
 export default function MarvelCharacters() {
   const router = useRouter();
-  const { searchTerm, currentPage, setTotalOfCharacters, setCharacter } = useMyContext();
-  const [allData, setAllData] = useState<CharactersDataModified[]>([]);
-  const [characters, setCharacters] = useState<CharactersDataModified[]>([]);
+  const {
+    characters,
+    setCharacters,
+    currentPage,
+    howManyCharacters,
+    setHowManyCharacters,
+    allData,
+    setAllData,
+    setCurrentCharacter,
+  } = useMyContext();
 
   function handleShowCharacterDetails(character: CharactersDataModified) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { series, events, ...arg } = character;
-    setCharacter(arg);
+    setCurrentCharacter(arg);
     router.push('/character');
   }
 
   useEffect(() => {
+    setCharacters(allData.slice((currentPage - 1) * 10, 10));
+  }, [currentPage]);
+
+  useEffect(() => {
     async function loadCharacters() {
+      let allComics: CharactersDataModified[] = [];
+      let offset = 0;
+      let totalOfCharacters = 0;
+
       try {
         toast.loading('Carregando conteúdo...');
 
-        const { results, total }: ResultOfListCharacter = await listCharacters(
-          (currentPage - 1) * 10
-        );
-        const newResult = dataCharacters(results);
+        if (howManyCharacters !== 1564) {
+          do {
+            const { results, total } = await listCharacters(offset);
+            const newResult = dataCharacters(results);
 
-        setAllData(newResult);
-        setCharacters(newResult.slice(0, 10));
-        setTotalOfCharacters(total);
+            allComics = [...allData, ...newResult];
+
+            setAllData(allComics);
+            setHowManyCharacters(total);
+
+            totalOfCharacters = total;
+            offset += 20;
+          } while (offset < totalOfCharacters);
+        }
       } catch (err: unknown) {
         const error = err as MarvelError;
         toast.error(`Error: ${error.message}`);
@@ -47,15 +67,7 @@ export default function MarvelCharacters() {
     }
 
     loadCharacters();
-  }, [currentPage]);
-
-  useEffect(() => {
-    const contentSearched: CharactersDataModified[] = allData.filter((character) =>
-      character.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    setCharacters(contentSearched);
-  }, [searchTerm]);
+  }, []);
 
   return (
     <>

@@ -12,7 +12,7 @@ const baseUrl = process.env.NEXT_PUBLIC_MARVEL_BASE_URL as string;
 const params: string = paramsUrlMarvel();
 
 export async function listCharacters(offset: number) {
-  const pagination: string = `&limit=10&offset=${offset}`;
+  const pagination: string = `&limit=20&offset=${offset}`;
   const url: string = `${baseUrl}/v1/public/characters${params}${pagination}`;
   const res: Response = await fetch(url);
 
