@@ -14,14 +14,14 @@
 
 ## Aplicação no Seu Caso
 
-### Usando `useState` para `allData`:
+### Usando `useState` para `allData`
 
 Se você usasse `useState` para `allData`, cada vez que você atualizasse `allData` com `setAllData`, o componente `MarvelCharacters` seria re-renderizado. Esse re-render poderia ser problemático porque:
 
 - **Desempenho:** Cada atualização em `allData` desencadeia uma re-renderização do componente. Isso pode levar a uma experiência de usuário menos fluida e a um desempenho ruim se você estiver lidando com muitos dados e atualizações frequentes.
 - **Sincronização de Estado:** Manter a sincronização entre o estado `allData` e as operações de carregamento poderia ser mais complexo e suscetível a erros, especialmente se os dados são carregados em lotes e adicionados gradualmente.
 
-### Usando `useRef` para `allData`:
+### Usando `useRef` para `allData`
 
 - **Desempenho:** `useRef` permite que você mantenha a referência para `allData` sem causar re-renderizações. Assim, quando você atualiza `allDataRef.current`, o componente não é re-renderizado. Isso é especialmente útil quando você está apenas manipulando dados sem precisar atualizar a UI.
 - **Persistência de Dados:** Com `useRef`, você mantém uma referência persistente para os dados carregados. Isso significa que você pode adicionar novos dados sem reiniciar o processo de renderização e sem afetar a exibição atual dos dados.
