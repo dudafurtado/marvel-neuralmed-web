@@ -1,22 +1,15 @@
 'use client';
 import Image from 'next/image';
-import { useEffect } from 'react';
 import useMyContext from '@/contexts/useMyContext';
 import SearchLogo from '@/assets/search-logo.svg';
-import { CharactersDataModified } from '@/interfaces/charactersInterfaces';
 
 export default function SearchCharacter() {
-  const { searchTerm, setSearchTerm, allData, setCharacters } = useMyContext();
+  const { searchTerm, setSearchTerm, setCurrentPage } = useMyContext();
 
-  useEffect(() => {
-    const contentSearched: CharactersDataModified[] = allData
-      .filter((character) => {
-        return character.name.toLowerCase().includes(searchTerm.toLowerCase());
-      })
-      .slice(0, 10);
-
-    setCharacters(contentSearched);
-  }, [searchTerm]);
+  function handleSearch(value: string) {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  }
 
   return (
     <section className="text-white font-inter px-8 mb-5 mt-8">
@@ -32,7 +25,8 @@ export default function SearchCharacter() {
             type="text"
             placeholder="Digite um nome para pesquisar"
             className="w-96 rounded-md bg-transparent py-1.5 pl-4 pr-12 text-white border border-border-grey placeholder:text-muted-foreground"
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
           />
           <Image
             src={SearchLogo}

@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { listCharacters } from '@/server/fetchMarvelAPI';
 import useMyContext from '@/contexts/useMyContext';
@@ -19,44 +19,49 @@ export default function MarvelCharacters() {
     currentPage,
     howManyCharacters,
     setHowManyCharacters,
-    allData,
     setAllData,
     setCurrentCharacter,
+    searchTerm,
   } = useMyContext();
+  const allDataRef = useRef<CharactersDataModified[]>([]);
 
-  function handleShowCharacterDetails(character: CharactersDataModified) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleShowCharacterDetails = (character: CharactersDataModified) => {
     const { series, events, ...arg } = character;
     setCurrentCharacter(arg);
     router.push('/character');
-  }
+  };
 
   useEffect(() => {
-    setCharacters(allData.slice((currentPage - 1) * 10, 10));
-  }, [currentPage]);
+    const filteredData = allDataRef.current.filter((character) =>
+      character.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const startIndex = (currentPage - 1) * 10;
+    const endIndex = startIndex + 10;
+    const pageCharacters = filteredData.slice(startIndex, endIndex);
+
+    setCharacters(pageCharacters);
+  }, [currentPage, searchTerm, allDataRef.current]);
 
   useEffect(() => {
     async function loadCharacters() {
-      let allComics: CharactersDataModified[] = [];
-      let offset = 0;
-      let totalOfCharacters = 0;
+      let offset = allDataRef.current.length;
 
       try {
-        toast.loading('Carregando conteúdo...');
+        toast.loading('Carregando personagens...');
 
-        if (howManyCharacters !== 1564) {
-          do {
-            const { results, total } = await listCharacters(offset);
-            const newResult = dataCharacters(results);
+        if (howManyCharacters === 0) {
+          const { total } = await listCharacters(0);
+          setHowManyCharacters(total);
+        }
 
-            allComics = [...allData, ...newResult];
+        while (offset < howManyCharacters) {
+          console.log(offset);
+          const { results } = await listCharacters(offset);
+          const newResult = dataCharacters(results);
 
-            setAllData(allComics);
-            setHowManyCharacters(total);
-
-            totalOfCharacters = total;
-            offset += 20;
-          } while (offset < totalOfCharacters);
+          allDataRef.current = [...allDataRef.current, ...newResult];
+          setAllData([...allDataRef.current]);
+          offset += 20;
         }
       } catch (err: unknown) {
         const error = err as MarvelError;
@@ -67,7 +72,7 @@ export default function MarvelCharacters() {
     }
 
     loadCharacters();
-  }, []);
+  }, [howManyCharacters]);
 
   return (
     <>
@@ -77,32 +82,38 @@ export default function MarvelCharacters() {
           <div className="font-bold">Séries</div>
           <div className="font-bold">Eventos</div>
         </section>
-        {characters.map((character: CharactersDataModified) => (
-          <section
-            key={character.id}
-            className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4 cursor-pointer"
-            onClick={() => handleShowCharacterDetails(character)}
-          >
-            <div className="flex items-center gap-4">
-              <img src={character.src} alt="" className="w-11 h-11" />
-              <h3 className="font-semibold text-sm">{character.name}</h3>
-            </div>
-            <div className="flex flex-col justify-center">
-              {character.series.map((item: SeriesAndEventsModified) => (
-                <h4 key={item.id} className="text-white">
-                  {item.name}
-                </h4>
-              ))}
-            </div>
-            <div className="flex flex-col justify-center">
-              {character.events.map((event: SeriesAndEventsModified) => (
-                <h4 key={event.id} className="text-white">
-                  {event.name}
-                </h4>
-              ))}
-            </div>
-          </section>
-        ))}
+        {characters.length > 0
+          ? characters.map((character: CharactersDataModified | null, index) =>
+              character ? (
+                <section
+                  key={character.id}
+                  className="grid grid-cols-3 gap-4 text-left border border-border-grey rounded px-5 py-4 mb-4 cursor-pointer"
+                  onClick={() => handleShowCharacterDetails(character)}
+                >
+                  <div className="flex items-center gap-4">
+                    <img src={character.src} alt="" className="w-11 h-11" />
+                    <h3 className="font-semibold text-sm">{character.name}</h3>
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    {character.series.map((item: SeriesAndEventsModified) => (
+                      <h4 key={item.id} className="text-white">
+                        {item.name}
+                      </h4>
+                    ))}
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    {character.events.map((event: SeriesAndEventsModified) => (
+                      <h4 key={event.id} className="text-white">
+                        {event.name}
+                      </h4>
+                    ))}
+                  </div>
+                </section>
+              ) : (
+                ''
+              )
+            )
+          : ''}
       </main>
       <Toaster />
     </>
